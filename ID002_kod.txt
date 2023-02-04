@@ -1,0 +1,85 @@
+import unittest
+from appium.webdriver.common.appiumby import AppiumBy
+from appium import webdriver
+
+
+class Test2(unittest.TestCase):
+
+    name = "XXXX"
+    surname = "XXXXXXXX"
+    invalid_email = "xxx@gmail.com"
+    password = "Alicja123."
+
+    # Setup class and configuration
+    def setUp(self):
+        desired_caps = {
+            "platformName": "Android",
+            "deviceName": "emulator-5554",
+            "appPackage": "com.inditex.zara",
+            "appActivity": "com.inditex.zara.MainActivity"
+        }
+        # Start the Appium client
+        self.driver = webdriver.Remote("http://localhost:4723/wd/hub", desired_caps)
+        self.driver.implicitly_wait(20)
+
+    # Close the Appium client
+    def tearDown(self):
+        self.driver.quit()
+
+    # TC: ID001
+    # 1. Kliknij "“ACCOUNT”
+    # 2. Kliknij “REGISTER”
+    # 3. Wpisz nieistniejący adres email
+    # 4. Wpisz hasło
+    # 5. Wpisz ponownie hasło
+    # 6. Wpisz imię
+    # 7. Wpisz nazwisko
+    # 8. Kliknij “ACCEPT THE TERMS OF USE”
+    # 9. Kliknij “CREATE ACCOUNT”
+    # Oczekiwany rezultat:
+    # Rejestracja nie powodzi się
+    # Użytkownik dostaje informację, że wprowadzony adres email jest niepoprawny
+    # Rezultat testów:
+    # Po przyciśnięciu przycisku “CREATE ACCOUNT” aplikacja się zamyka. Nie można zalogować się na dany email ani ponownie się na niego zarejestrować
+
+    def test1(self):
+        # Enter on main page
+        zara = self.driver.find_element(AppiumBy.ID, "com.inditex.zara:id/zaraButtonLabel")
+        zara.click()
+        # Click 'Continue'
+        zaraContinue = self.driver.find_element(AppiumBy.XPATH, "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.LinearLayout/android.widget.LinearLayout")
+        zaraContinue.click()
+        # Click 'Don't allow"
+        Donotallow = self.driver.find_element(AppiumBy.ID,"com.android.permissioncontroller:id/permission_deny_button")
+        Donotallow.click()
+        # 1. Kliknij "“ACCOUNT”
+        account = self.driver.find_element(AppiumBy.ID,"com.inditex.zara:id/accountTab2")
+        account.click()
+        # 2. Kliknij “REGISTER”
+        register = self.driver.find_element(AppiumBy.XPATH,"/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.ScrollView/android.view.ViewGroup/android.view.ViewGroup/android.widget.LinearLayout/android.widget.LinearLayout")
+        register.click()
+        # 3. Wpisz email
+        email_field = self.driver.find_element(AppiumBy.ID,"com.inditex.zara:id/registerMailField")
+        email_field.send_keys(self.invalid_email)
+        # 4. Wpisz hasło
+        hasło = self.driver.find_element(AppiumBy.ID,"com.inditex.zara:id/registerPasswordField")
+        hasło.send_keys(self.password)
+        # 5. Wpisz ponownie hasło
+        hasło2 = self.driver.find_element(AppiumBy.ID, "com.inditex.zara:id/registerRepeatPasswordField")
+        hasło2.send_keys(self.password)
+        # 6. Wpisz imię używając cyfr
+        name = self.driver.find_element(AppiumBy.XPATH,"/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.ScrollView/android.view.ViewGroup/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.AutoCompleteTextView[1]")
+        name.send_keys(self.name)
+        # 7. Wpisz nazwisko używając cyfr
+        lastname = self.driver.find_element(AppiumBy.XPATH, "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.ScrollView/android.view.ViewGroup/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.AutoCompleteTextView[2]")
+        lastname.send_keys(self.surname)
+        # 8. Kliknij “ACCEPT THE TERMS OF USE”
+        acceptterms = self.driver.find_element(AppiumBy.ID,"com.inditex.zara:id/addressItemCheckbox")
+        acceptterms.click()
+        # 9. Kliknij “CREATE ACCOUNT”
+        createaccount = self.driver.find_element(AppiumBy.XPATH,"/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.ScrollView/android.view.ViewGroup/android.widget.LinearLayout[2]/android.widget.LinearLayout")
+        createaccount.click()
+
+
+    #if __name__ == '__main__':
+    #unittest.main()
