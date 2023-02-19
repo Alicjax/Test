@@ -38,7 +38,7 @@ class ZaraRegisterIncorrectEmailTests(unittest.TestCase):
     # Oczekiwany rezultat:
     # Rejestracja nie powodzi się. Użytkownik dostaje informację, że wprowadzony adres email jest niepoprawny
 
-    def test1ID002_ZaraRegisterIncorrectEmailTests(self):
+    def testID002_ZaraRegisterIncorrectEmailTests(self):
         # Enter on main page
         zara = self.driver.find_element(AppiumBy.ID, "com.inditex.zara:id/zaraButtonLabel")
         zara.click()
