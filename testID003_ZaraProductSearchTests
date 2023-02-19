@@ -1,0 +1,59 @@
+import unittest
+from appium.webdriver.common.appiumby import AppiumBy
+from appium import webdriver
+
+class ZaraProductSearchTests(unittest.TestCase):
+
+    błąd = "trrousers"
+
+    # Setup class and configuration
+    def setUp(self):
+        desired_caps = {
+            "platformName": "Android",
+            "deviceName": "emulator-5554",
+            "appPackage": "com.inditex.zara",
+            "appActivity": "com.inditex.zara.MainActivity"
+        }
+        # Start the Appium client
+        self.driver = webdriver.Remote("http://localhost:4723/wd/hub", desired_caps)
+        self.driver.implicitly_wait(20)
+
+    # Close the Appium client
+    def tearDown(self):
+        self.driver.quit()
+
+    # TC: ID003
+    # 1. Kliknij “SEARCH”
+    # 2. Kliknij w okno “SEARCH”
+    # 3. Wpisz nazwę produktu z błędem
+    # 4. Kliknij “SEARCH”
+    # Oczekiwany rezultat:
+    # Pomimo wprowadzonej złej nazwy produktu, wyszukiwarka z sugestiami znajduje produkt.
+
+    def testID003_ZaraProductSearchTests(self):
+        # Enter on main page
+        zara = self.driver.find_element(AppiumBy.ID, "com.inditex.zara:id/zaraButtonLabel")
+        zara.click()
+        # Click 'Continue'
+        zaraContinue = self.driver.find_element(AppiumBy.ID, "com.inditex.zara:id/zaraButtonTextContainer")
+        zaraContinue.click()
+        # Click 'Don't allow"
+        Donotallow = self.driver.find_element(AppiumBy.ID,"com.android.permissioncontroller:id/permission_deny_button")
+        Donotallow.click()
+        # 1. Kliknij “SEARCH”
+        lupasearch = self.driver.find_element(AppiumBy.ID, "com.inditex.zara:id/searchTab2")
+        lupasearch.click()
+        # 2. Kliknij w okno “SEARCH”
+        windowsearch = self. driver.find_element(AppiumBy.ID,"com.inditex.zara:id/search_text_field_hint")
+        windowsearch.click()
+        # 3. Wpisz nazwę produktu z błędem
+        złanazwa = self. driver.find_element(AppiumBy.ID,"com.inditex.zara:id/search_text_field_edit_text")
+        złanazwa.send_keys(self.błąd)
+        self.driver.implicitly_wait(10)
+        suggestionsTROUSERS = self.driver.find_element(AppiumBy.XPATH,"//*[@resource-id='com.inditex.zara:id/search_suggestion_name']")
+        #Result
+        self.assertTrue(suggestionsTROUSERS.is_displayed(), "suggestion with the correct product name")
+        suggestionsTROUSERS.click()
+
+    #if __name__ == '__main__':
+    #unittest.main()
