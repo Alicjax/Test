@@ -79,4 +79,4 @@ class ZaraRegisterIncorrectEmailTests(unittest.TestCase):
         account = self.driver.find_element(AppiumBy.XPATH, "//*[@resource-id='com.inditex.zara:id/navRowItemName']")
         # Result
         self.assertTrue(account.is_displayed(), "Email is valid")
-        account.click()
+       
