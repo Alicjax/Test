@@ -79,8 +79,7 @@ class ZaraRegisterIncorrectNameSurnameTests(unittest.TestCase):
         account = self.driver.find_element(AppiumBy.XPATH, "//*[@resource-id='com.inditex.zara:id/navRowItemName']")
         # Result
         self.assertTrue(account.is_displayed(), "Name and Surname are valid")
-        account.click()
-
+        
 
     #if __name__ == '__main__':
     #unittest.main()
