@@ -53,7 +53,6 @@ class ZaraProductSearchTests(unittest.TestCase):
         suggestionsTROUSERS = self.driver.find_element(AppiumBy.XPATH,"//*[@resource-id='com.inditex.zara:id/search_suggestion_name']")
         #Result
         self.assertTrue(suggestionsTROUSERS.is_displayed(), "suggestion with the correct product name")
-        suggestionsTROUSERS.click()
 
     #if __name__ == '__main__':
     #unittest.main()
